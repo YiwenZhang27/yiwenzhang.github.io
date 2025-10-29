@@ -1,0 +1,17 @@
+name: "Yiwen Zhang"
+output_dir: "."
+navbar:
+  title: "Yiwen Zhang"
+  left:
+    - text: "Home"
+      href: index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/YiwenZhang27
+    - icon: fa-envelope
+      href: mailto:yz4994@cumc.columbia.edu
+    - icon: fa-linkedin
+      href: https://www.linkedin.com/in/yiwen-zhang-5a9a85331/
+output:
+  html_document:
+    theme: flatly

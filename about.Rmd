@@ -1,0 +1,21 @@
+---
+title: "Experience"
+output: html_document
+---
+
+# 🎓 Education
+- **Columbia University – MPH in Biostatistics**  
+  *2024 – 2026, New York, NY*  
+  Coursework: Applied Regression, Data Science, Epidemiology II, etc.
+
+# 💼 Professional Experience
+- **AstraZeneca China – Business Analytics Intern**  
+  - Automated sales dashboards via VBA & Think-Cell → 50% reporting efficiency gain  
+  - Conducted KPI and ROI analysis for national sales teams
+
+- **IQVIA Consulting – Market Access Intern**  
+  - Analyzed API export data and built market models for MENA region  
+  - Produced strategic insights on pricing and procurement policy
+
+# 🧠 Skills
+R | Python | SQL | Tableau | SAS | Data Visualization | Healthcare Analytics
