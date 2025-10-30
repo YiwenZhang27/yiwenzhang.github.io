@@ -1,0 +1,115 @@
+---
+title: "NOAA.Rmd"
+output: html_document
+date: "2025-10-29"
+---
+---
+title: "NY NOAA Weather Dashboard"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+
+# Load and clean NOAA dataset
+noaa_df <- read_csv("./nynoaadat.csv")
+
+noaa_df = ny_noaa |> 
+  drop_na(tmax, tmin, prcp) |> 
+  mutate(
+    year = as.numeric(substr(date, 1, 4)),
+    month = as.numeric(substr(date, 6, 7)),
+    tmax=as.numeric(tmax),
+    prcp = prcp / 10   # convert to mm
+  ) |> 
+  filter(year >= 2010) |> 
+  sample_n(100)  # sample for speed
+```
+
+---
+
+## 🌡️ Temperature Trends
+
+### Average Monthly Maximum Temperature by Station (Line Plot)
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+avg_temp = noaa_df |>
+  group_by(id, year, month) |>
+  summarize(mean_tmax = mean(tmax, na.rm = TRUE)) |>
+  ungroup()
+
+plot_ly(
+  data = avg_temp, 
+  x = ~month, 
+  y = ~mean_tmax, 
+  color = ~id, 
+  type = "scatter", 
+  mode = "lines"
+) |>
+  layout(
+    title = "Monthly Average Max Temperature by Station (2010–Present)",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Average Tmax (°C)")
+  )
+```
+
+---
+
+## 🌧️ Precipitation Patterns
+
+### Distribution of Precipitation by Month (Box Plot)
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+plot_ly(
+  data = noaa_df,
+  x = ~factor(month),
+  y = ~prcp,
+  type = "box",
+  boxpoints = "outliers",
+  color = ~factor(month)
+) |>
+  layout(
+    title = "Distribution of Monthly Precipitation (mm)",
+    xaxis = list(title = "Month"),
+    yaxis = list(title = "Precipitation (mm)")
+  )
+```
+
+---
+
+## ❄️ Snowfall Summary
+
+### Average Annual Snowfall by Station (Bar Chart)
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+snow_summary = noaa_df |>
+  group_by(year, id) |>
+  summarize(avg_snow = mean(snow, na.rm = TRUE))
+
+plot_ly(
+  data = snow_summary,
+  x = ~year,
+  y = ~avg_snow,
+  color = ~id,
+  type = "bar"
+) |>
+  layout(
+    barmode = "group",
+    title = "Average Annual Snowfall by Station (mm)",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Average Snowfall (mm)")
+  )
+```
+
+---
+
+## ✅ Notes
+- Dataset: `p8105.datasets::ny_noaa`
+- Interactive visualizations made with **Plotly**:
+  - Line plot: Temperature trends by station and month
+  - Box plot: Precipitation variation across months
+  - Bar chart: Annual snowfall averages
+- All units converted for readability (°C, mm).
